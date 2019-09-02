@@ -16,7 +16,6 @@ app.post("/print", async (req, res) => {
     const url = "http://localhost:8000/alcohol/alcohol-attitudes";
     const level = "subtopic";
     await generateReport(url, level); 
-
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}.`));

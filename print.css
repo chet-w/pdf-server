@@ -1,0 +1,168 @@
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 1.3cm;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1cm;
+    margin: 0;
+}
+
+h3 {
+    margin: 0;
+}
+
+p {
+    font-size: 14pt;
+}
+
+.page {
+    width: 21cm;
+    height: 29.7cm;
+    background: white;
+    padding: 2.54cm;
+    margin-bottom: 2cm;
+}
+
+.cover-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-section img {
+    width: 10cm;
+    transform: translateX(-0.8cm);
+}
+
+.cover-content {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.page-content {
+    width: 100%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.topic-with-logo {
+    display: flex;
+    align-items: center;
+}
+
+.topic-with-logo img {
+    margin-right: 0.5cm;
+    width: 2cm;
+}
+
+.subtopic-details p {
+    margin: 0;
+}
+
+.cover-footer {
+    width: calc(100% + 5.08cm);
+    transform: translateX(-2.54cm) translateY(2.54cm);
+    height: calc(10% + 2.54cm);
+    background: linear-gradient(to bottom,#02a7c9,#0080a4);
+    padding: 1.27cm 2.54cm 2.54cm 2.54cm;
+    position: relative;
+}
+
+.footer-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+}
+
+.footer-border-segment {
+    height: 0.3cm;
+    width: 20%;
+}
+
+.footer-border-segment.green {
+    background: #84BD00;
+}
+.footer-border-segment.blue {
+    background: #0080a4;
+}
+.footer-border-segment.orange {
+    background: #ED8B00;
+}
+.footer-border-segment.yellow {
+    background: #FFD100;
+}
+.footer-border-segment.purple {
+    background: #833177;
+}
+
+.footer-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-body .nz-govt {
+    height: 0.5cm;
+}
+
+.footer-body .hpa-logo {
+    height: 1.8cm;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    height: 15%;
+}
+.page-header img {
+    transform: translateY(-0.8cm);
+}
+
+.page-header .kupe {
+    transform: translateX(-0.8cm) translateY(-0.8cm);
+}
+
+.selected-group {
+    margin: 1cm 0;
+}
+
+.intro-text p {
+    margin: 0;
+}
+
+.table-section img {
+    width: 100%;
+    transform: scale(1.04);
+}
+
+.notes {
+    font-size: 8pt;
+}
+
+.notes .source {
+    font-size: 8pt;
+    color: #aaa;
+}
+
