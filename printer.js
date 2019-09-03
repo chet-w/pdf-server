@@ -9,14 +9,18 @@ const generateReport = async (url, level) => {
             width: 1920,
             deviceScaleFactor: 1.5,
         },
-        headless: true
+        headless: true,
+        args: [
+            "--allow-file-access-from-files",
+            "--enable-local-file-accesses"
+        ]
     });
     const page = await browser.newPage();
     await page.goto(url);
-    if(level === "subtopic") {
+    if (level === "subtopic") {
         await generateSubtopicReport(page);
         Promise.resolve()
-    }    
+    }
     await browser.close();
 };
 
@@ -26,13 +30,15 @@ const generateSubtopicReport = async page => {
     await grabElementAsImage("#topic-icon", "topic-icon", page);
     // Get Topic name
     const topicElement = await page.$("#topic-heading");
-    const topicText = await page.evaluate(el => el.textContent, topicElement); 
+    const topicText = await page.evaluate(el => el.textContent, topicElement);
     // Get Subtopic name
     const subtopicElement = await page.$("#subtopic-heading");
-    const subtopicText = await page.evaluate(el => el.textContent, subtopicElement); 
+    const subtopicText = await page.evaluate(el => el.textContent, subtopicElement);
     // Get Subtopic description
     const subtopicDescElement = await page.$("#subtopic-description");
-    const subtopicDescText = await page.evaluate(el => el.textContent, subtopicDescElement); 
+    const subtopicDescText = await page.evaluate(el => el.textContent, subtopicDescElement);
+
+    await page.screenshot({ path: 'example.png' })
 
     const htmlContent = `
     <!DOCTYPE html>
@@ -42,7 +48,7 @@ const generateSubtopicReport = async page => {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="print.css" />
+    <link rel="stylesheet" href="http:localhost:5018/print.css" />
     <title>Subtopic report!</title>
 </head>
 
@@ -50,11 +56,11 @@ const generateSubtopicReport = async page => {
     <section class="page cover-page">
         <article class="cover-content">
             <div class="logo-section">
-                <img src="print-imgs/kupe.svg" />
+                <img src="http:localhost:5018/print-imgs/kupe.svg" />
             </div>
             <div class="cover-title-section">
                 <div class="topic-with-logo">
-                    <img src="topic-icon.png" />
+                    <img src="http:localhost:5018/topic-icon.png" />
                     <h1>${topicText}</h1>
                 </div>
                 <div class="subtopic-details">
@@ -72,16 +78,16 @@ const generateSubtopicReport = async page => {
                 <div class="footer-border-segment purple"></div>
             </div>
             <div class="footer-body">
-                <img class="hpa-logo" src="print-imgs/hpa.svg" />
-                <img class="nz-govt" src="print-imgs/nz-govt.svg" />
+                <img class="hpa-logo" src="http:localhost:5018/print-imgs/hpa.svg" />
+                <img class="nz-govt" src="http:localhost:5018/print-imgs/nz-govt.svg" />
             </div>
         </footer>
     </section>
 
     <section class="page">
         <header class="page-header">
-            <img class="kupe" src="print-imgs/kupe.svg" />
-            <img src="print-imgs/hpa-color.svg" />
+            <img class="kupe" src="http:localhost:5018/print-imgs/kupe.svg" />
+            <img src="http:localhost:5018/print-imgs/hpa-color.svg" />
         </header>
         <article class="page-content">
             <div class="main-content">
@@ -95,7 +101,7 @@ const generateSubtopicReport = async page => {
                     <strong>Group:</strong> Total
                 </div>
                 <div class="table-section">
-                    <img src="indicator-table.png" />
+                    <img src="http:localhost:5018/indicator-table.png" />
                 </div>
             </div>
             <div class="notes">
@@ -109,7 +115,7 @@ const generateSubtopicReport = async page => {
                 </ul>
             </div>
         </article>
-        <footer class="cover-footer">
+        <footer class="page-footer">
             <div class="footer-border">
                 <div class="footer-border-segment green"></div>
                 <div class="footer-border-segment blue"></div>
@@ -118,8 +124,8 @@ const generateSubtopicReport = async page => {
                 <div class="footer-border-segment purple"></div>
             </div>
             <div class="footer-body">
-                <img class="hpa-logo" src="print-imgs/hpa.svg" />
-                <img class="nz-govt" src="print-imgs/nz-govt.svg" />
+                <img class="hpa-logo" src="http:localhost:5018/print-imgs/hpa.svg" />
+                <img class="nz-govt" src="http:localhost:5018/print-imgs/nz-govt.svg" />
             </div>
         </footer>
     </section>
@@ -128,30 +134,34 @@ const generateSubtopicReport = async page => {
 </html>
     `;
 
-    fs.writeFile("subtopic-report.html", htmlContent, () => {
-        console.log("done!");
+    await page.goto(`data:text/html,${htmlContent}`, { waitUntil: 'networkidle2' });
+    await page.screenshot({ path: "test.png" });
+    await page.pdf({
+        path: `subtopic-report.pdf`,
+        format: 'A4',
+        printBackground: true
     });
 
-    // await grabElementAsImage("#prevalence-table", "indicator-table", page);
+    console.log("Done!")
 };
 
 const grabElementAsImage = async (selector, filename, page, padding = 0) => {
     const rect = await page.evaluate(selector => {
-      const element = document.querySelector(selector);
-      const {x, y, width, height} = element.getBoundingClientRect();
-      return {left: x, top: y, width, height, id: element.id};
+        const element = document.querySelector(selector);
+        const { x, y, width, height } = element.getBoundingClientRect();
+        return { left: x, top: y, width, height, id: element.id };
     }, selector);
-  
+
     return await page.screenshot({
-      path: `${filename}.png`,
-      clip: {
-        x: rect.left - padding,
-        y: rect.top - padding,
-        width: rect.width + padding * 2,
-        height: rect.height + padding * 2
-      }
+        path: `${filename}.png`,
+        clip: {
+            x: rect.left - padding,
+            y: rect.top - padding,
+            width: rect.width + padding * 2,
+            height: rect.height + padding * 2
+        }
     });
-  }
+}
 
 
 

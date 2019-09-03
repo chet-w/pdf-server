@@ -36,7 +36,6 @@ p {
     height: 29.7cm;
     background: white;
     padding: 2.54cm;
-    margin-bottom: 2cm;
 }
 
 .cover-page {
@@ -82,6 +81,15 @@ p {
 .cover-footer {
     width: calc(100% + 5.08cm);
     transform: translateX(-2.54cm) translateY(2.54cm);
+    height: calc(10% + 2.54cm);
+    background: linear-gradient(to bottom,#02a7c9,#0080a4);
+    padding: 1.27cm 2.54cm 2.54cm 2.54cm;
+    position: relative;
+}
+
+.page-footer {
+    width: calc(100% + 5.08cm);
+    transform: translateX(-2.54cm);
     height: calc(10% + 2.54cm);
     background: linear-gradient(to bottom,#02a7c9,#0080a4);
     padding: 1.27cm 2.54cm 2.54cm 2.54cm;
@@ -159,6 +167,7 @@ p {
 
 .notes {
     font-size: 8pt;
+    padding-bottom: 1cm;
 }
 
 .notes .source {
