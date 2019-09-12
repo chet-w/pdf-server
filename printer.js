@@ -2,7 +2,10 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 
 
-const generateReport = async (url, level) => {
+const generateReport = async (url, level, subject) => {
+
+    console.log(url, level, subject);
+
     const browser = await puppeteer.launch({
         defaultViewport: {
             height: 1080,
@@ -38,7 +41,7 @@ const generateSubtopicReport = async page => {
     const subtopicDescElement = await page.$("#subtopic-description");
     const subtopicDescText = await page.evaluate(el => el.textContent, subtopicDescElement);
 
-    await page.screenshot({ path: 'example.png' })
+    await grabElementAsImage("#prevalence-table", "indicator-table", page);
 
     const htmlContent = `
     <!DOCTYPE html>
@@ -135,7 +138,6 @@ const generateSubtopicReport = async page => {
     `;
 
     await page.goto(`data:text/html,${htmlContent}`, { waitUntil: 'networkidle2' });
-    await page.screenshot({ path: "test.png" });
     await page.pdf({
         path: `subtopic-report.pdf`,
         format: 'A4',

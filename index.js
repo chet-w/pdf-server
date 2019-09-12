@@ -13,10 +13,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
 app.post("/print", async (req, res) => {
-    // const { url, level } = req.body;
-    const url = "http://localhost:8000/alcohol/alcohol-attitudes";
-    const level = "subtopic";
-    await generateReport(url, level); 
+    const { url, level, subject } = req.body;
+    // const url = "http://localhost:8000/alcohol/alcohol-attitudes";
+    // const level = "subtopic";
+    await generateReport(url, level, subject); 
+    res.status(200).send("Done!");
 });
+
+app.get("/download", (req, res) => {
+    console.log("downloading...")
+    res.download("subtopic-report.pdf");
+    
+})
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}.`));
